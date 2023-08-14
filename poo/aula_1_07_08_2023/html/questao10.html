@@ -1,0 +1,116 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Diagrama de classe UML</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #222;
+            color: #fff;
+            font-family: consolas;
+        }
+
+        .flex {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row;
+            min-height: 100vh;
+            gap: .5rem;
+        }
+
+        .container {
+            border: crimson solid 1px;
+            box-shadow: 0 0 1.5rem crimson;
+            padding: 1rem;
+            width: 300px;
+        }
+
+        .diagrama .grupo {
+            border-top: white dotted 1px;
+            padding: 1rem;
+        }
+
+        .q8 {
+            position: relative;
+            bottom: 70px;
+            right: 15px;
+        }
+
+        .q9 {
+            position: relative;
+            bottom: 70px;
+            left: 190px;
+        }
+
+        .botao {
+            background-color: black;
+            padding: .7rem;
+            border-radius: .5rem;
+        }
+    </style>
+  </head>
+  <body>
+    <main>
+        
+        <section id="diagrama-classe-questoes-oito-nove">
+            <div class="diagrama flex">
+
+                <!-- Diagrama de classe A da questão 8 -->
+                <div class="container">
+
+                    <span class="q8 botao">Questão 8</span>
+
+                    <div class="grupo nomeClasse">
+                        <span class="nomeClasse">Circulo</span>
+                    </div>
+                    
+                    <div class="grupo atribs">
+                        <p>+ raio: Number</p>
+                    </div>
+    
+                    <div class="grupo metodos">
+                        <p>+ calcularArea(raio): Number</p>
+                        <p>+ calcularPerimetro(raio): Number</p>
+                    </div>
+                </div>
+                
+                <!-- Diagrama de classe B da questão 9 -->
+                <div class="container">
+                    
+                    <span class="q9 botao">Questão 9</span>
+                    
+                    <div class="grupo nomeClasse">
+                        <span class="nomeClasse">SituacaoFinanceira</span>
+                    </div>
+                    
+                    <div class="grupo atribs">
+                        <p>+ valorCreditos: Number</p>
+                        <p>+ valorDebitos: Number</p>
+                    </div>
+    
+                    <div class="grupo metodos">
+                        <p>+ saldo(valorCreditos, valorDebitos): Number</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        
+    </main>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  </body>
+</html>

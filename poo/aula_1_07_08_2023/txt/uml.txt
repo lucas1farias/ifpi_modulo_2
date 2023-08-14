@@ -1,0 +1,27 @@
+
+
+Representação de uma classe
+  * Nome
+  * Atributos
+  * Métodos
+
+Visibilidade dos membros
+
++ público
+# protegido
+- privado
+~ pacote
+/ derivado
+
+Exemplo
+
+-----------------------------------
+Pessoa
+-----------------------------------
+- nome: String
+- sobrenome: String
+- dataNasc: Date
+-----------------------------------
++ calcularIdade(dataNasc): int
++ estudar(): void
+-----------------------------------
