@@ -1,0 +1,10 @@
+
+
+Qual as diferenças nos códigos A e B que você encontrou?
+
+- Bibliotecas
+- Uso de "alias" para diminuir códigos
+- Instanciações de parâmetros diferentes, apesar de poderem ser similares
+- Ausência de booleanos, levando a tratamentos diferentes entre as funções
+- Instanciação de variáveis diferentes 
+- Sintaxes de entrada e saída 
