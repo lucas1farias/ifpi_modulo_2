@@ -1,0 +1,13 @@
+
+
+Na raiz do projeto:
+    npm install typescript --save-dev
+
+Transpilar (estar acessando via terminal qualquer diretório que tenha um arquivo ".ts")
+    npx tsc nome_arquivo.ts --watch
+    npx tsc nome_arquivo.ts -w
+    
+
+Criar/configurar arquivo/módulo de configuração do Typescript (tsconfig.json) 
+    tsc --init (na raiz do projeto)
+ 

@@ -1,0 +1,7 @@
+
+
+2. Qual o principal problema do uso de tipagem dinâmica?
+
+RESPOSTA
+    Acredito que seja o fato de exibir erros somente na execução, o que trás insegurança ao código e talvez
+    dificulte um poucos mais em detectar erros que levem em consideração a tipagem

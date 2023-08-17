@@ -1,0 +1,9 @@
+
+
+6. Poderíamos dizer que a tipagem do TypeScript é fraca por uma variável do tipo
+   number aceitar tanto inteiros como ponto flutuante?
+
+  RESPOSTA
+      Eu diria que não, pois ela parece ser um pouco flexível no aspecto da tipagem numérica, contudo, o resto
+      das tipagens costuma ter bastante restrição, assim como a linguagem propõe impedir conversões automáticas
+      e avisa sobre erros em tempo de compilação, o que define sua tipagem como forte.
