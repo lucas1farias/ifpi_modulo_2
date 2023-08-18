@@ -1,0 +1,19 @@
+
+
+. Analise a estrutura de dados esquematizada a seguir:
+
+    a -> b -> c <- d -> e -> f
+
+    Explique por que essa estrutura:
+    
+    (a) Não é um conjunto.
+        Os dados em conjuntos não se relacionam, e não há como definir ser conjunto sendo que os dados não 
+        possuem valor para os julgar
+
+    (b) Não é uma lista.
+        A linearidade encerra no nó "c", pois possui predecessor, mas não possui sucessor
+
+    (c) Não é uma árvore.
+        O nó "c" têm dois elementos apontando para ele, e eles não são seus filhos, o que invalida ser árvore, 
+        pois "c" só pode ter dois ou mais nós apontando para ele se estes estiverem imediatamente abaixo dele,
+        só que nessa estrutura "b" e "d" estão no mesmo nível dele

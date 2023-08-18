@@ -1,0 +1,12 @@
+
+
+// Minhas resposats estão corretas?
+. Indique a estrutura de dados mais adequada para ser usada num programa que precisa representar:
+
+a) Estradas entre cidades de um mapa. (Grafo)
+
+b) A estrutura organizacional de uma empresa. (Árvore)
+
+c) A fila de impressão em um sistema operacional. (Fila)
+
+d) A estrutura de diretórios em um sistema operacional. (Árvore)

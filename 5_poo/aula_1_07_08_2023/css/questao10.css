@@ -1,0 +1,52 @@
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #222;
+    color: #fff;
+    font-family: consolas;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    min-height: 100vh;
+    gap: .5rem;
+}
+
+.container {
+    border: crimson solid 1px;
+    box-shadow: 0 0 1.5rem crimson;
+    padding: 1rem;
+    width: 300px;
+}
+
+.diagrama .grupo {
+    border-top: white dotted 1px;
+    padding: 1rem;
+}
+
+.q8 {
+    position: relative;
+    bottom: 70px;
+    right: 15px;
+}
+
+.q9 {
+    position: relative;
+    bottom: 70px;
+    left: 190px;
+}
+
+.botao {
+    background-color: black;
+    padding: .7rem;
+    border-radius: .5rem;
+}
