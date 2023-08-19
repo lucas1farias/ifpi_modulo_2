@@ -1,0 +1,44 @@
+# Arquivos temporários
+*.pyc
+*.pyo
+__pycache__/
+
+# Arquivos de configuração local
+db.sqlite3
+
+# Arquivos de mídia carregados
+media/
+
+# Ambiente virtual
+venv/
+env/
+*.env
+
+# Logs
+logs/
+*.log
+
+# Arquivos de configuração de IDEs
+.vscode/
+.idea/
+
+# Arquivos de backup
+*~
+
+# Arquivos de configuração de desenvolvedor
+*.bak
+*.swp
+*.swo
+
+# Arquivos gerados automaticamente
+*.pyc
+*.pyo
+*.orig
+
+# Cache do Django
+__pycache__/
+*.cache
+
+# Ambiente específico (exemplo: desenvolvimento ou produção)
+*.development
+*.production
