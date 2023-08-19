@@ -1,0 +1,20 @@
+
+<!--
+first_name=request.POST['first_name'],
+last_name=request.POST['last_name'],
+username=request.POST['username'],
+email=request.POST['email'],
+password=request.POST['password']
+-->
+<div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="flex">
+            <input type="text" name="name" placeholder="Nome">
+            <input type="text" name="cpf" placeholder="CPF">
+            <input type="text" name="address" placeholder="Endereço">
+            <input type="submit" class="btn btn-warning" value="Criar">
+        </div>
+    </form>
+</div>
+

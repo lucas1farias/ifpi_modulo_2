@@ -1,3 +1,8 @@
-from django.contrib import admin
 
-# Register your models here.
+
+from django.contrib import admin
+from .models import *
+
+@admin.register(Hospede)
+class NomeModeloAdmin(admin.ModelAdmin):
+    list_display = ("nome", "cpf", "endereco")

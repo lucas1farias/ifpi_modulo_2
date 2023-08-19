@@ -1,19 +1,32 @@
 
 
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
-    <title>Modelagem aula 1 - Hotel</title>
-</head>
-<body>
+
+{% block title %}
+    <title>Aula 2 - Modelagem sobre Hotel</title>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block body %}
     <main>
-        <section>
-            <h2>Página Inicial</h2>
+        <section id="forms">
+            
+            <div class="flex">
+                <a class="btn btn-primary" href="{% url 'novo-cliente' %}" target="_blank">Criar cliente</a>
+            </div>
+            
+            <div class="added_clients">
+                {% for clt in clients %}
+                    <span>{{ clt.nome }},</span>
+                {% endfor %}
+            </div>
+            
         </section>
     </main>
-</body>
-</html>
+    
+    <script type="text/javascript" src=""></script>
+{% endblock %}

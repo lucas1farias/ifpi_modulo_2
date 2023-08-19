@@ -1,0 +1,83 @@
+
+
+. Organizar os dados em tabelas
+. Grupos: apts., hospedes, hospedagem
+
+. Atribs. desconsiderados (reduzir tamanho da tabela):
+    (apt.)       = andar
+    (clt.)       = tel, nasc., ident.,
+    (hospedagem) = check_out, check_in
+
+TABELA RASCUNHO
+--------------------------------------------------
+>> Apartamento
+apt_n    apt_cat    apt_descr    apt_diaria
+
+>> Cliente
+clt_cpf    clt_nome    clt_end
+
+>> Hospedagem
+hosp_entr    hosp_saida    hosp_total
+---------------------------------------------------
+
+. A quantidade de pessoas é definida pela categoria do apt.
+. Precisa armazenar o valor total? Sim e Não
+. Não, pois em banco de dados não é recomendado armazenar valores gerados (que podem ser calculados)
+. Neste contexto, "hosp_total" seria um cálculo de: (hosp_saida - hosp_entr) * apt_diaria
+. Sim, pois talvez em algum contexto, seja preciso fazer este cálculo
+
+===== PRIMEIRO PROBLEMA: Muitas redundâncias (dados não otimizados) =====
+
+. Supondo que o hotel vá inaugurar em instantes, a tabela inicial está VAZIA
+. Um cliente chega e pergunta: quais os apartamentos disponíveis e suas diárias?
+. Os apartamentos só aparecem na tabela a medida que vão sendo ocupados (ERRO)
+. Pela tabela inicial definida acima, mesmo com dados preenchidos, não se sabe todos os apartamentos disponíveis
+. Imagine "João" como sendo um "objeto reincidente" desta tabela
+. O impacto nisto, é que "João" sempre têm seus dados únicos REPETIDOS (ERRO)
+. O objeto "João" (suas infos), assim como qualquer outro objeto, deve ser ÚNICO nesta tabela
+. O maior problema é: "João" mudar um de seus dados/atributos
+. Ao fazer isso, essa mudança teria de ser modifica o equivalente a qtd. de vezes que "João" foi cadastrado repetidamente na tabela (ERRO)
+. Assim como os dados do "João", os dados dos apartamentos teriam de ser repetidos 
+. A proporção da qtd. de possíveis clientes (novos ou repetidos) em relação a qtd. de quartos, torna a tabela inviável por repetição de dados
+. Depois de 1 ano com esse estilo de tabela, imagine quantas linhas com dados repetidos se chega a ter
+
+TABELA com instâncias
+-------------------------------------------------------------------------------------
+102    STD2    descr. STD2    123    João    end. João    02/08/23    03/08/23    400
+201    LUX3    descr. LUX3    321    Maria   end. Maria   02/09/23    04/09/23    1000
+401    STD3    descr. STD3    456    Antônio end. Antônio 04/09/23    ...         600    
+-------------------------------------------------------------------------------------
+
+SOBRE DIVISÃO
+. Por conta da REDUNDÂNCIA, é preciso dividir a TABELA RASCUNHO em TABELAS separadas, que em algum momento se relacionarão
+. Portanto, dados repetidos entre instâncias criadas, indica que é preciso criar uma nova TABELA/GRUPO para organizador estes dados de forma que não se repitam
+. Fazendo isso, os dados com campos redundantes não serão mais repetidos (de forma explícita)
+. Isso porque, em alguma dentre todas as tabelas criadas, uma matriz receberá identificadores das outras (sua chave primária passada como chave estrangeira)
+. Ao invés de todos os campos se repetirem, um atributo representante da OUTRA TABELA (chave primária) é usada como ATRIBUTO na TABELA MATRIZ para conceder o acesso ao objeto das OUTRAS TABELAS
+. Por meio deste ATRIBUTO e NOTAÇÃO PONTO, os dados pertinentes são acessados
+
+. Neste momento, ao inaugurar o Hotel, o cliente já têm acesso aos apartamentos existentes, e já pode se cadastrar
+. Porém, não se sabe quem ocupou qual apartamento, pois ainda não há uma TABELA destinada aos APARTAMENTOS
+
+SOBRE CHAVE PRIMÁRIA
+. Menor conjunto que garante unicidade
+. Normalmente representada por números, onde os SGBDs atuais possuem processos de auto incrementação, impedindo os ids de se repetirem
+. Pode ser a junção entre atributos de uma TABELA, de preferência, dados pequenos
+. Quando mais atributos ou se os atributos escolhidos como chave estrangeira forem muito grande, mostra incomgruência
+. Chaves estrangeiras são baseadas em praticidade, ou seja, na menor representação possível do OBJETO de uma TABELA
+
+. Exemplo: 
+    Na TABELA (Hospedes) criada acima, sabemos que (clt_id) é a chave primária
+    Vamos ignorar isso por enquanto, para explicar o assunto
+    Poderia ser chave estrangeira, os atributos (clt_nome) e (clt_cpf)? Sim
+    Garante unicidade? Sim
+    É apropriado? Não
+    Motivo? O atributo (clt_cpf) já é um subconjunto deste conjunto que garante esssa unicidade
+
+SOBRE CHAVE PRIMÁRIA
+. Quando uma TABELA não possui uma CP explícita, então se cria uma
+. Na TABELA abaixo, como os atributos não são os melhores p/ garantir unicidade, "hosp_cod" é criado
+
+QUESTÃO
+. A forma mais correta de relacionar as tabelas será (Hospedagem) se tornar a MATRIZ
+. Ela passará a receber as CP das outras TABELAS como CE 

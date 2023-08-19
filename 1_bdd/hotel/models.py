@@ -7,6 +7,14 @@ class Hospede(models.Model):
     nome = models.CharField("Nome", max_length=20)
     endereco = models.TextField("Endereço", max_length=100)
 
+    
+    def __str__(self):
+            return self.nome
+
+    class Meta:
+        verbose_name = 'Hospede'
+        verbose_name_plural = verbose_name + 's'
+
 class CategoriaApt(models.Model):
     categoria = models.CharField("Categoria", max_length=7)
     descricao = models.TextField("Descrição", max_length=100)
