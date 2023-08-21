@@ -9,6 +9,7 @@
     Acho que sim, pois uma pessoa pode possuir várias contas, e em cada conta, seria interessante ela apontar 
     para o seu dono, não para o nome da pessoa, mas para o objeto da pessoa em si
 */
+export {}
 
 class Pessoa {
     public titular: string

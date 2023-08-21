@@ -1,13 +1,20 @@
 
 
 Na raiz do projeto:
-    npm install typescript --save-dev
+    npm i typescript --save-dev
+    npm install typescript --save-dev (caso o de cima não funcione)
 
 Transpilar (estar acessando via terminal qualquer diretório que tenha um arquivo ".ts")
-    npx tsc nome_arquivo.ts --watch
     npx tsc nome_arquivo.ts -w
+    npx tsc nome_arquivo.ts --watch (caso o de cima não funcione)
     
-
 Criar/configurar arquivo/módulo de configuração do Typescript (tsconfig.json) 
-    tsc --init (na raiz do projeto)
- 
+    npx tsc --init (na raiz do projeto)
+
+Arquivo "tsconfig.json" variável "outDir"
+    Configurar os arquivos na raiz do projeto
+    Configuração: "outDir": "./nome_past_container"
+    Pelo terminal, usar o comando abaixo 
+    Comando: npx tsc
+    Esse comando verifica todos os arquivos ".ts" a procura de erros
+    Não havendo erros, todos os arquivos verificados são transpilados e enviados à pasta container

@@ -22,10 +22,11 @@
   . Erros são visto no momento da criação do código (compilação) com avisos antes de executar
   . Aumenta o código, mas pode torná-lo mais profissional, explicativo (se não há exagero/ausência de inferência)
 */
+export {}
 
 // Este exemplo mostra a tipagem estática em ação (Type 'boolean' is not assignable to type 'string'.)
 let pessoa: string = "Mario"
-pessoa = true
+// pessoa = true
 
 // Porém, se na instanciação fosse dado mais de uma opção de tipo, TypeScript aceita a abordagem
 let individuo: string | boolean = "Alceu"

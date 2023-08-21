@@ -5,7 +5,7 @@
      problemático.
 */
 
-function somarMuitos(colecao: ) {
+function somarMuitos(colecao: any[]) {
     let acumulador = 0;
     for (let i = 0; i < colecao.length; i++) {
         acumulador += colecao[i]
