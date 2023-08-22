@@ -16,13 +16,19 @@
         <section id="forms">
             
             <div class="flex">
+                <h2>Formulários</h2>
                 <a class="btn btn-primary" href="{% url 'novo-cliente' %}" target="_blank">Criar cliente</a>
             </div>
             
-            <div class="added_clients">
-                {% for clt in clients %}
-                    <span>{{ clt.nome }},</span>
-                {% endfor %}
+            
+        </section>
+
+        <section id="data-exhibition">
+            <div class="flex">
+                <h2>Acesso</h2>
+                <div>
+                    <a class="all-clients-lnk btn btn-secondary" href="{% url 'exibir-clientes' %}" target="_blank">Ver clientes</a>
+                </div>
             </div>
             
         </section>

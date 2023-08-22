@@ -1,0 +1,31 @@
+
+
+body {
+    background-color: #222;
+    font-family: consolas;
+}
+
+h2 {
+    color: mediumseagreen;
+    text-shadow: 0 0 1rem mediumseagreen;
+}
+
+table tr {
+    text-align: center;
+}
+
+.flex-line-break {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 50%;
+}
+
+.flex-in-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}

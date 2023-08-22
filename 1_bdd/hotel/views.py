@@ -13,15 +13,11 @@ from .models import *
 class IndexView(TemplateView):
     template_name = 'index.html'
 
-    def show_clients(self):
-        return Hospede.objects.all()
-
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
-        context['clients'] = self.show_clients()
         return context
 
-class AddClienteView(TemplateView):
+class AddClientView(TemplateView):
     template_name = 'novo_cliente.html'
 
     def post(self, request):
@@ -33,7 +29,11 @@ class AddClienteView(TemplateView):
         new_client.save()
         messages.success(request, "Cliente foi criado")
         return redirect("index")
-    
+
+class ClientView(TemplateView):
+    template_name = 'exibir_clientes.html'
+
     def get_context_data(self, **kwargs):
-        context = super(AddClienteView, self).get_context_data(**kwargs)
+        context = super(ClientView, self).get_context_data(**kwargs)
+        context['clients'] = show_clients()
         return context

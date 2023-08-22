@@ -1,0 +1,40 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Clientes cadastrados</title>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/exibir_clientes.css' %}">
+{% endblock %}
+
+{% block body %}
+    <section id="clients">
+        <div class="container flex-line-break">
+            <h2>Clientes cadastrados</h2>
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Endereço</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    {% for clt in clients %}
+                        <tr>
+                            <td class="bg bg-primary">{{ clt.nome }}</td>
+                            <td>{{ clt.cpf }}</td>
+                            <td>{{ clt.endereco }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}
