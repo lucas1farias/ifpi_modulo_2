@@ -9,7 +9,6 @@ class Hospede(models.Model):
     nome = models.CharField("Nome", max_length=20)
     endereco = models.TextField("Endereço", max_length=100)
 
-    
     def __str__(self):
             return self.nome
 
@@ -18,21 +17,64 @@ class Hospede(models.Model):
         verbose_name_plural = verbose_name + 's'
 
 class CategoriaApt(models.Model):
-    categoria = models.CharField("Categoria", max_length=7)
+    DIARIAS = (
+        ('1', '400'),
+        ('2', '700'),
+        ('3', '900'),
+        ('4', '1200'),
+        ('5', '1400'),
+    )
+    nome = models.CharField("Categoria", max_length=7)
     descricao = models.TextField("Descrição", max_length=100)
-    diaria = models.DecimalField("Valor da diária", max_digits=5, decimal_places=2)
+    diaria = models.CharField("Valor da diária da categoria", max_length=1, choices=DIARIAS)
+
+    def __str__(self):
+            return self.nome
+
+    class Meta:
+        verbose_name = 'Categoria do Apartamento'
+        verbose_name_plural = 'Categorias dos Apartamentos'
 
 class Apartamento(models.Model):
     num = models.IntegerField("Número do apt.")
     id_cat_apt = models.ForeignKey(CategoriaApt, on_delete=models.CASCADE, related_name="apartamento")
+    livre = models.BooleanField("Disponível")
+
+    def __str__(self):
+            return self.num
+
+    class Meta:
+        verbose_name = 'Apartamento'
+        verbose_name_plural = verbose_name + 's'
 
 class Hospedagem(models.Model):
+    # APT_STATUS = (
+    #     ('1', 'ocupado'),
+    #     ('0', 'livre')
+    # )
+
     ent = models.DateField("Data de entrada", auto_now_add=True)
     saida = models.DateField("Data de entrada", auto_now=True)
     id_cliente = models.ForeignKey(Hospede, on_delete=models.CASCADE, related_name="hospedagem")
     id_apt = models.ForeignKey(Apartamento, on_delete=models.CASCADE, related_name="hospedagem")
-    id_diaria = models.ForeignKey(CategoriaApt, on_delete=models.CASCADE, related_name="hospedagem")
+    # id_diaria = models.ForeignKey(CategoriaApt, on_delete=models.CASCADE, related_name="hospedagem")
+    
+    # Inserção do valor da época (não usar valores pré-definidos)
+    # Valores pré-definidos podem mudar do período da entrada dos hospede para o saída
+    # O valor a ser considerado é o valor da época que o hospede entrou no hotel (digitado manualmente)
+    diaria = models.IntegerField("Valor diária")
+    
+    # ocupado = models.CharField("Status do apartamento", max_length=1, choices=APT_STATUS)
+    livre = models.BooleanField("Status do apartamento")
 
+    def __str__(self):
+            return f'{self.id_cliente.nome} - {self.id_cliente.cpf}'
+
+    class Meta:
+        verbose_name = 'Hospedagem'
+        verbose_name_plural = 'Hospedagens'
+
+# =========================================== Funções de utilidade ===========================================
 def choose_random_i(min, max):
     return floor(random() * (max - min) + min)
 

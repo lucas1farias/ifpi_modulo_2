@@ -3,7 +3,7 @@
 from django.urls import path
 from .views import *
 
-# path('nome da url no template', chamada da view, nome da url na chamado do template)
+# # path('nome da url no template', chamada da view, nome da url na chamado do template)
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
