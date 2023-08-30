@@ -2,7 +2,7 @@
 
 from django.db import models
 from math import floor
-from random import random
+from random import random, choice
 
 class Hospede(models.Model):
     cpf = models.CharField("Cpf", max_length=14)
@@ -214,8 +214,30 @@ def create_street_name():
     
     return "Rua " + get_street_name() + a_void + get_name() + a_void + get_street_name() + a_void + get_name_complement()
 
-def show_person_sample():
-    return create_person() + ", " + create_street_name() + ', ' + get_block() + ', ' + get_house_number()
+def create_identifier():
+    dot, line = ".", "-"
+    cpf = [None] * 14
+    nums = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
+
+    cpf[3] = dot
+    cpf[7] = dot
+    cpf[11] = line
+
+    for i in range(len(cpf)):
+        if cpf[i] is None:
+            cpf[i] = choice(nums)
+    
+    return "".join(cpf)
+
+def create_address():
+    return create_street_name() + ', ' + get_block() + ', ' + get_house_number()
+
+def create_person_object():
+    new_client = Hospede(nome=create_person(), cpf=create_identifier(), endereco=create_address())
+    new_client.save() 
 
 def show_clients():
     return Hospede.objects.all()
+
+def show_clients_dtb_size():
+    return len(show_clients())

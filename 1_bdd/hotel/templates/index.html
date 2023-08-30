@@ -14,20 +14,33 @@
 {% block body %}
     <main>
         <section id="forms">
-            
-            <div class="flex">
-                <h2>Formulários</h2>
-                <a class="btn btn-primary" href="{% url 'novo-cliente' %}" target="_blank">Criar cliente</a>
+
+            <div class="flex form-new-client-automatic">
+                <h3>Criação</h3>
+                
+                <p>Criar hospede automatico</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="text" name="client-amount" placeholder="quantidade">
+                    <input type="submit" value="criar" class="btn btn-primary">
+                </form>
+
+                <div class="flex form-new-client-standard">
+                    <span>
+                        Criar hospede manualmente
+                        <!-- hotel/templates/novo_cliente_form.html -->
+                        <a class="btn btn-primary" href="{% url 'novo-cliente' %}" target="_blank">criar</a>
+                    </span>
+                    
+                </div>
             </div>
-            
-            
         </section>
 
         <section id="data-exhibition">
-            <div class="flex">
-                <h2>Acesso</h2>
+            <div>
+                <h3>Acesso</h3>
                 <div>
-                    <a class="all-clients-lnk btn btn-secondary" href="{% url 'exibir-clientes' %}" target="_blank">Ver clientes</a>
+                    <a class="all-clients-lnk btn btn-success" href="{% url 'exibir-clientes' %}" target="_blank">ver clientes</a>
                 </div>
             </div>
             

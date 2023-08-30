@@ -1,5 +1,9 @@
 
 
+// Observe que  no meu código existe uma progressão de dados sendo adicionados
+// Só que eu gostaria que eles fossem adicionados com intervalos de tempo, e não todos de uma vez
+// Em outras palavras, eu gostaria de ver cada progresso de adição de dados
+// Como eu faço isso?
 class Valor {
 
     indice(min: number, max: number): number {
@@ -133,45 +137,42 @@ const dados: Leitura[] = []
 let leituraId: number = 0
 
 while (dados.length < 10) {
-    let segundos: number = new Date().getSeconds()
+    
+    let temperatura: Temperatura = new Temperatura(new Valor().novoValor())
+    let umidade: Umidade = new Umidade(new Valor().novoValor())
+    let poluicao: Umidade = new Poluicao(new Valor().novoValor())
+    let ruido: Ruido = new Ruido(new Valor().novoValor())
+    let sensorAtual: Sensor = new Sensor(temperatura, umidade, poluicao, ruido, new Date())
+    let leitura: Leitura = new Leitura(leituraId, sensorAtual)
+    
+    dados.push(leitura)
+    // console.log("-----o", dados[leituraId])
+    leituraId++
 
-    if (segundos % 2 == 0) {
-        let temperatura: Temperatura = new Temperatura(new Valor().novoValor())
-        let umidade: Umidade = new Umidade(new Valor().novoValor())
-        let poluicao: Umidade = new Poluicao(new Valor().novoValor())
-        let ruido: Ruido = new Ruido(new Valor().novoValor())
-        let sensorAtual: Sensor = new Sensor(temperatura, umidade, poluicao, ruido, new Date())
-        let leitura: Leitura = new Leitura(leituraId, sensorAtual)
-        
-        dados.push(leitura)
-        // console.log("-----o", dados[leituraId])
-        leituraId++
+    const medias: number[] = media(dados)
+    const maiorTemperatura: Leitura = maior(dados, "temperatura")
+    const maiorUmidade: Leitura = maior(dados, "umidade")
+    const maiorPoluicao: Leitura = maior(dados, "poluição")
+    const maiorRuido: Leitura = maior(dados, "ruído")
+    const menorTemperatura: Leitura = menor(dados, "temperatura")
+    const menorUmidade: Leitura = menor(dados, "umidade")
+    const menorPoluicao: Leitura = menor(dados, "poluição")
+    const menorRuido: Leitura = menor(dados, "ruído")
 
-        const medias: number[] = media(dados)
-        const maiorTemperatura: Leitura = maior(dados, "temperatura")
-        const maiorUmidade: Leitura = maior(dados, "umidade")
-        const maiorPoluicao: Leitura = maior(dados, "poluição")
-        const maiorRuido: Leitura = maior(dados, "ruído")
-        const menorTemperatura: Leitura = menor(dados, "temperatura")
-        const menorUmidade: Leitura = menor(dados, "umidade")
-        const menorPoluicao: Leitura = menor(dados, "poluição")
-        const menorRuido: Leitura = menor(dados, "ruído")
-
-        const estrutura = {
-            medias: medias,
-            maiorTemperatura: [`Leitura ${maiorTemperatura.id}`, `${maiorTemperatura.sensor.temperatura.valor}ºC`],
-            maiorUmidade: [`Leitura ${maiorUmidade.id}`, `${maiorUmidade.sensor.umidade.valor}%`],
-            maiorPoluicao: [`Leitura ${maiorPoluicao.id}`, `${maiorPoluicao.sensor.poluicao.valor}%`],
-            maiorRuido: [`Leitura ${maiorRuido.id}`, `${maiorRuido.sensor.ruido.valor}%`],
-            menorTemperatura: [`Leitura ${menorTemperatura.id}`, `${menorTemperatura.sensor.temperatura.valor}ºC`],
-            menorUmidade: [`Leitura ${menorUmidade.id}`, `${menorUmidade.sensor.umidade.valor}%`],
-            menorPoluicao: [`Leitura ${menorPoluicao.id}`, `${menorPoluicao.sensor.poluicao.valor}%`],
-            menorRuido: [`Leitura ${menorRuido.id}`, `${menorRuido.sensor.ruido.valor}%`]
-        }
-        
-        // Os dados são todos impressos de uma vez (deveriam sair um por vez) (não sei como fazer)
-        console.log(estrutura)
+    const estrutura = {
+        medias: medias,
+        maiorTemperatura: [`Leitura ${maiorTemperatura.id}`, `${maiorTemperatura.sensor.temperatura.valor}ºC`],
+        maiorUmidade: [`Leitura ${maiorUmidade.id}`, `${maiorUmidade.sensor.umidade.valor}%`],
+        maiorPoluicao: [`Leitura ${maiorPoluicao.id}`, `${maiorPoluicao.sensor.poluicao.valor}%`],
+        maiorRuido: [`Leitura ${maiorRuido.id}`, `${maiorRuido.sensor.ruido.valor}%`],
+        menorTemperatura: [`Leitura ${menorTemperatura.id}`, `${menorTemperatura.sensor.temperatura.valor}ºC`],
+        menorUmidade: [`Leitura ${menorUmidade.id}`, `${menorUmidade.sensor.umidade.valor}%`],
+        menorPoluicao: [`Leitura ${menorPoluicao.id}`, `${menorPoluicao.sensor.poluicao.valor}%`],
+        menorRuido: [`Leitura ${menorRuido.id}`, `${menorRuido.sensor.ruido.valor}%`]
     }
+    
+    // Os dados são todos impressos de uma vez (deveriam sair um por vez) (não sei como fazer)
+    console.log(estrutura)
 }
 
 /*

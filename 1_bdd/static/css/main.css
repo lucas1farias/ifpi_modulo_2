@@ -5,13 +5,21 @@ body {
     font-family: consolas;
 }
 
-h2 {
+h1, h2, h3, h4, h5, h6 {
     color: mediumseagreen;
     text-shadow: 0 0 1rem mediumseagreen;
 }
 
 table tr {
     text-align: center;
+}
+
+section {
+    margin: 1rem;
+}
+
+span {
+    color: white;
 }
 
 .flex-line-break {
