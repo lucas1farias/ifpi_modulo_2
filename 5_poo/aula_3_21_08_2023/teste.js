@@ -53,14 +53,47 @@ const dados = [
     {id: 49, temperatura: 10, umidade: 23, poluicao: 87, ruido: 58, data: "22:36:08"},
 ]
 
-function slowLoop(currentI) {
-    setTimeout(() => {
-        console.log(currentI)
-    }, 1000 * currentI)
+// Porque há retornos "undefined" aqui?
+class Valor {
+
+    indice(min, max) {
+        return Math.floor(Math.random() * max - min) + min
+    }
+
+    novoValor() {
+        const valoresSemZero = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+        const valores = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+        let valor = ""
+
+        for (let i = 0; i < 2; i++) {
+            valor.length == 0 
+            ? valor += valoresSemZero[this.indice(0, valoresSemZero.length)] 
+            : valor += valores[this.indice(0, valores.length)] 
+        }
+        return Number(valor)
+    }
+    
+    novoValorTemperatura() {
+        const valoresSemZero = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+        const valores = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+        let valor = ""
+
+        for (let i = 0; i < 2; i++) {
+            valor.length == 0 
+            ? valor += valoresSemZero[this.indice(0, valoresSemZero.length)] 
+            : valor += valores[this.indice(0, valores.length)] 
+        }
+        let valorFinal = Number(valor)
+        
+        if (valorFinal <= 50) {
+            return valorFinal
+        } else {
+            return this.novoValorTemperatura()
+        }
+    }
 }
 
-let i = 0
-while (i < 10) {
-    slowLoop(i)
-    i++
+let novoValor = new Valor()
+for (let i = 0; i < 50; i++) {
+    console.log(novoValor.novoValorTemperatura())
 }
