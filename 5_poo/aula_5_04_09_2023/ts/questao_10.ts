@@ -46,7 +46,11 @@ class Jogador {
     }
 
     calcularAtaque() {
-        return this.forca * this.nivel
+        const multiplicador = this.execDanoCritico()
+        const chance = valorAleatorio(0, 2)
+        
+        // Efetua dano comum em 0 e crítico em 1
+        return chance == 0 ? (this.forca * this.nivel) : (this.forca * this.nivel) * multiplicador 
     }
 
     atacar(oponente: Jogador) {
@@ -55,7 +59,7 @@ class Jogador {
             oponente.pontosAtuais = oponente.pontosAtuais - dano
             console.log(`${this.classe} ataca [dano: ${dano.toFixed(2)}]`)
         } else {
-            console.log("\nNão pode atacar")
+            console.log(`\n${this.classe} não pode atacar, pois foi derrotado!`)
         }
     }
     
@@ -64,7 +68,7 @@ class Jogador {
     }
 
     toString() {
-        return `STR: ${this.forca.toFixed(1)}    LVL: ${this.nivel}    HP: ${this.pontosAtuais.toFixed(2)}`
+        return `CLS: ${this.classe}    STR: ${this.forca.toFixed(1)}    LVL: ${this.nivel}    HP: ${this.pontosAtuais.toFixed(2)}`
     }
 
     subirNivel() {
@@ -74,21 +78,27 @@ class Jogador {
     }
 
     subirForca() {
-        if (this.classe == "Guerreiro") {
-            this.forca += 2
-        } else if (this.classe == "Espadachim") {
-            this.forca += 1.4
-        }
+        this.classe == "Guerreiro" ? this.forca += 2 : null
+        this.classe == "Espadachim" ? this.forca += 1.4 : null
+    }
+
+    restaurarHp() {
+        this.pontosAtuais = this.nivel * this.baseHp // encher HP
+    }
+
+    bonusStatus() {
+        this.classe == "Guerreiro" ? this.pontosAtuais += 40 : null
+        this.classe == "Espadachim" ?  this.pontosAtuais += 25 : null
     }
 
     subirHp() {
-        if (this.classe == "Guerreiro") {
-            this.pontosAtuais = this.nivel * this.baseHp // encher HP
-            this.pontosAtuais += 40                      // Bônus por evoluir
-        } else if (this.classe == "Espadachim") {
-            this.pontosAtuais = this.nivel * this.baseHp
-            this.pontosAtuais += 25
-        }
+        this.restaurarHp()
+        this.bonusStatus()
+    }
+
+    execDanoCritico() {
+        const variacoes = [1.5, 1.8, 2.1, 2.4, 2.7, 3.0, 3.3]
+        return variacoes[valorAleatorio(0, variacoes.length)]
     }
 }
 
@@ -97,7 +107,7 @@ function valorAleatorio(min: number, max:number): number {
 }
 
 function exibirRodadaInfos(jogadorA: Jogador, jogadorB: Jogador, contador: number): void {
-    console.log(`\n========== Rodada ${contador} ==========`)
+    console.log(`\n==================== Rodada ${contador} ====================`)
     console.log(`${jogadorA.classe} está vivo? ${jogadorA.estaVivo() ? `sim, HP=${jogadorA.pontosAtuais.toFixed(2)}` : 'não'}`)
     console.log(`${jogadorB.classe} está vivo? ${jogadorB.estaVivo() ? `sim, HP=${jogadorB.pontosAtuais.toFixed(2)}` : 'não'}\n`)
 }
@@ -115,60 +125,62 @@ function iniciarAtaques(jogadorA: Jogador, jogadorB: Jogador): void {
     } 
     // Decisão aleatória por conta de empate
     if (jogadorA.nivel == jogadorB.nivel) {
-        let sorte = valorAleatorio(0, 1) 
+        let sorte = valorAleatorio(0, 2) 
         
         if (sorte == 0) {
             jogadorA.atacar(jogadorB)
-            console.log(`${jogadorA.classe} atacou ${jogadorB.classe}\n`)
             jogadorB.atacar(jogadorA)
-            console.log(`${jogadorB.classe} atacou ${jogadorA.classe}\n`)
+            
         } else {
             jogadorB.atacar(jogadorA)
-            console.log(`${jogadorB.classe} atacou ${jogadorA.classe}\n`)
             jogadorA.atacar(jogadorB)
-            console.log(`${jogadorA.classe} atacou ${jogadorB.classe}\n`)
         }
     }
 }
 
 function elevarNivel(jogadorA: Jogador, jogadorB: Jogador, valorRef: number) {
     // Quem subirá o nível
-    console.log("\n--------------------> QUEM SUBIU NÍVEL?")
-    if (valorRef == 1 || valorRef == 3 || valorRef == 5 || valorRef == 7) {
-        jogadorB.subirNivel()
-        console.log(`    ${jogadorB.classe.toUpperCase()}\n`)
-    } if (valorRef == 2 || valorRef == 4 || valorRef == 6) {
+    if (jogadorA.estaVivo() && valorRef == 2 || valorRef == 4 || valorRef == 6) {
         jogadorA.subirNivel()
-        console.log(`    ${jogadorA.classe.toUpperCase()}\n`)
+        console.log(`\n-----> ${jogadorA.classe.toUpperCase()} alcançou o nível ${jogadorA.nivel}`)
     }
+    if (jogadorB.estaVivo() && valorRef == 1 || valorRef == 3 || valorRef == 5 || valorRef == 7) {
+        jogadorB.subirNivel()
+        console.log(`\n-----> ${jogadorB.classe.toUpperCase()} alcançou o nível ${jogadorB.nivel}`)
+    } 
 }
 
 function exibirDadosAtualizados(jogadorA: Jogador, jogadorB: Jogador) {
-    console.log("\n========== RELATÓRIO ==========")
+    console.log("\n--------------------o RELATÓRIO")
     console.log(jogadorA.toString())
     console.log(jogadorB.toString())
 }
 
-function exibirResultado(jogadorA: Jogador, jogadorB: Jogador) {
+function exibirResultado(jogadorA: Jogador, jogadorB: Jogador, qtdRodadas: number) {
     console.log("\n\n========== RESULTADO DO PVP ==========")
     if (jogadorA.pontosAtuais > jogadorB.pontosAtuais) {
-        console.log(jogadorA.toString())
-        console.log(`${jogadorA.classe} venceu, restando ${jogadorA.pontosAtuais.toFixed(2)} de HP`)
+        console.log(`${jogadorA.classe} venceu em ${qtdRodadas} rodada(s), restando ${jogadorA.pontosAtuais.toFixed(2)} de HP`)
     } 
     else if (jogadorA.pontosAtuais < jogadorB.pontosAtuais) {
-        console.log(jogadorB.toString())
-        console.log(`${jogadorB.classe} venceu, restando ${jogadorB.pontosAtuais.toFixed(2)} de HP`)
+        console.log(`${jogadorB.classe} venceu em ${qtdRodadas} rodada(s), restando ${jogadorB.pontosAtuais.toFixed(2)} de HP`)
     } 
     else {
         console.log("Empate")
     }
+    console.log('\n')
 }
 
-let rodadas: number = 0
-const guerreiro: Jogador = new Jogador("Guerreiro", 2, 1, 120)
-const espadachim: Jogador = new Jogador("Espadachim", 1.7, 1, 95)
+let rodadas: number = 1
+
+/*
+  O guerreiro têm maior força e hp base, assim como seus bônus são maiores
+  A vantagem do espadachim é ter maior possibilidade de elevar nível, o que o possibilita escalar dano
+*/
+const guerreiro: Jogador = new Jogador("Guerreiro", 2, 1, 100)
+const espadachim: Jogador = new Jogador("Espadachim", 1.5, 1, 65)
 
 while (guerreiro.estaVivo() && espadachim.estaVivo()) {
+    // Aqui é onde o espadachim pode obter sua vantagem (1 chance a + de upar em relação ao Guerreiro)
     let chanceSubirNivel = valorAleatorio(1, 20)
 
     exibirRodadaInfos(guerreiro, espadachim, rodadas)
@@ -179,4 +191,4 @@ while (guerreiro.estaVivo() && espadachim.estaVivo()) {
     rodadas++
 }
 
-exibirResultado(guerreiro, espadachim)
+exibirResultado(guerreiro, espadachim, rodadas - 1)
