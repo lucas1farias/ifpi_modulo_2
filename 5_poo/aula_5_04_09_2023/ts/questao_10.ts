@@ -144,7 +144,7 @@ function elevarNivel(jogadorA: Jogador, jogadorB: Jogador, valorRef: number) {
         jogadorA.subirNivel()
         console.log(`\n-----> ${jogadorA.classe.toUpperCase()} alcançou o nível ${jogadorA.nivel}`)
     }
-    if (valorRef == 1 || valorRef == 3 || valorRef == 5 || valorRef == 7) {
+    if (valorRef == 1 || valorRef == 3 || valorRef == 5 || valorRef == 7 || valorRef == 9) {
         jogadorB.subirNivel()
         console.log(`\n-----> ${jogadorB.classe.toUpperCase()} alcançou o nível ${jogadorB.nivel}`)
     } 
@@ -178,7 +178,7 @@ function main() {
     A vantagem do espadachim é ter maior possibilidade de elevar nível, o que o possibilita escalar dano
     */
     const guerreiro: Jogador = new Jogador("Guerreiro", 2, 1, 100)
-    const espadachim: Jogador = new Jogador("Espadachim", 1.5, 1, 65)
+    const espadachim: Jogador = new Jogador("Espadachim", 1.6, 1, 65)
 
     while (guerreiro.estaVivo() && espadachim.estaVivo()) {
         // Aqui é onde o espadachim pode obter sua vantagem (1 chance a + de upar em relação ao Guerreiro)
