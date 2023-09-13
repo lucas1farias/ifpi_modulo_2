@@ -117,11 +117,11 @@ function iniciarAtaques(jogadorA, jogadorB) {
 }
 function elevarNivel(jogadorA, jogadorB, valorRef) {
     // Quem subirá o nível
-    if (jogadorA.estaVivo() && valorRef == 2 || valorRef == 4 || valorRef == 6) {
+    if (valorRef == 2 || valorRef == 4 || valorRef == 6) {
         jogadorA.subirNivel();
         console.log(`\n-----> ${jogadorA.classe.toUpperCase()} alcançou o nível ${jogadorA.nivel}`);
     }
-    if (jogadorB.estaVivo() && valorRef == 1 || valorRef == 3 || valorRef == 5 || valorRef == 7) {
+    if (valorRef == 1 || valorRef == 3 || valorRef == 5 || valorRef == 7 || valorRef == 9) {
         jogadorB.subirNivel();
         console.log(`\n-----> ${jogadorB.classe.toUpperCase()} alcançou o nível ${jogadorB.nivel}`);
     }
@@ -144,21 +144,26 @@ function exibirResultado(jogadorA, jogadorB, qtdRodadas) {
     }
     console.log('\n');
 }
-let rodadas = 1;
-/*
-  O guerreiro têm maior força e hp base, assim como seus bônus são maiores
-  A vantagem do espadachim é ter maior possibilidade de elevar nível, o que o possibilita escalar dano
-*/
-const guerreiro = new Jogador("Guerreiro", 2, 1, 100);
-const espadachim = new Jogador("Espadachim", 1.5, 1, 65);
-
-while (guerreiro.estaVivo() && espadachim.estaVivo()) {
-    // Aqui é onde o espadachim pode obter sua vantagem (1 chance a + de upar em relação ao Guerreiro)
-    let chanceSubirNivel = valorAleatorio(1, 20);
-    exibirRodadaInfos(guerreiro, espadachim, rodadas);
-    iniciarAtaques(guerreiro, espadachim);
-    elevarNivel(guerreiro, espadachim, chanceSubirNivel);
-    exibirDadosAtualizados(guerreiro, espadachim);
-    rodadas++;
+function main() {
+    let rodadas = 1;
+    /*
+    O guerreiro têm maior força e hp base, assim como seus bônus são maiores
+    A vantagem do espadachim é ter maior possibilidade de elevar nível, o que o possibilita escalar dano
+    */
+    const guerreiro = new Jogador("Guerreiro", 2, 1, 100);
+    const espadachim = new Jogador("Espadachim", 1.6, 1, 65);
+    while (guerreiro.estaVivo() && espadachim.estaVivo()) {
+        // Aqui é onde o espadachim pode obter sua vantagem (1 chance a + de upar em relação ao Guerreiro)
+        let chanceSubirNivel = valorAleatorio(1, 20);
+        exibirRodadaInfos(guerreiro, espadachim, rodadas);
+        iniciarAtaques(guerreiro, espadachim);
+        if (guerreiro.estaVivo() && espadachim.estaVivo()) {
+            elevarNivel(guerreiro, espadachim, chanceSubirNivel);
+        }
+        exibirDadosAtualizados(guerreiro, espadachim);
+        rodadas++;
+    }
+    exibirResultado(guerreiro, espadachim, rodadas - 1);
 }
-exibirResultado(guerreiro, espadachim, rodadas - 1);
+console.clear();
+main();
