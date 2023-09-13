@@ -151,6 +151,7 @@ let rodadas = 1;
 */
 const guerreiro = new Jogador("Guerreiro", 2, 1, 100);
 const espadachim = new Jogador("Espadachim", 1.5, 1, 65);
+
 while (guerreiro.estaVivo() && espadachim.estaVivo()) {
     // Aqui é onde o espadachim pode obter sua vantagem (1 chance a + de upar em relação ao Guerreiro)
     let chanceSubirNivel = valorAleatorio(1, 20);

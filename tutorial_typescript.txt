@@ -14,7 +14,6 @@ Criar/configurar arquivo/módulo de configuração do Typescript (tsconfig.json)
 Arquivo "tsconfig.json" variável "outDir"
     Configurar os arquivos na raiz do projeto
     Configuração: "outDir": "./nome_past_container"
-    Pelo terminal, usar o comando abaixo 
-    Comando: npx tsc
-    Esse comando verifica todos os arquivos ".ts" a procura de erros
-    Não havendo erros, todos os arquivos verificados são transpilados e enviados à pasta container
+
+Comando para compilar todos os arquivos ".ts" em ".js" e enviar para o diretório configurado em "outDir" 
+    npx tsc

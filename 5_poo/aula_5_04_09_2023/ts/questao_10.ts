@@ -170,25 +170,35 @@ function exibirResultado(jogadorA: Jogador, jogadorB: Jogador, qtdRodadas: numbe
     console.log('\n')
 }
 
-let rodadas: number = 1
+function main() {
+    let rodadas: number = 1
 
-/*
-  O guerreiro têm maior força e hp base, assim como seus bônus são maiores
-  A vantagem do espadachim é ter maior possibilidade de elevar nível, o que o possibilita escalar dano
-*/
-const guerreiro: Jogador = new Jogador("Guerreiro", 2, 1, 100)
-const espadachim: Jogador = new Jogador("Espadachim", 1.5, 1, 65)
+    /*
+    O guerreiro têm maior força e hp base, assim como seus bônus são maiores
+    A vantagem do espadachim é ter maior possibilidade de elevar nível, o que o possibilita escalar dano
+    */
+    const guerreiro: Jogador = new Jogador("Guerreiro", 2, 1, 100)
+    const espadachim: Jogador = new Jogador("Espadachim", 1.5, 1, 65)
 
-while (guerreiro.estaVivo() && espadachim.estaVivo()) {
-    // Aqui é onde o espadachim pode obter sua vantagem (1 chance a + de upar em relação ao Guerreiro)
-    let chanceSubirNivel = valorAleatorio(1, 20)
+    while (guerreiro.estaVivo() && espadachim.estaVivo()) {
+        // Aqui é onde o espadachim pode obter sua vantagem (1 chance a + de upar em relação ao Guerreiro)
+        let chanceSubirNivel = valorAleatorio(1, 20)
 
-    exibirRodadaInfos(guerreiro, espadachim, rodadas)
-    iniciarAtaques(guerreiro, espadachim)
-    elevarNivel(guerreiro, espadachim, chanceSubirNivel)
-    exibirDadosAtualizados(guerreiro, espadachim)
-    
-    rodadas++
+        exibirRodadaInfos(guerreiro, espadachim, rodadas)
+        iniciarAtaques(guerreiro, espadachim)
+        
+        if (guerreiro.estaVivo() && espadachim.estaVivo()) {
+            elevarNivel(guerreiro, espadachim, chanceSubirNivel)
+        }
+        
+        exibirDadosAtualizados(guerreiro, espadachim)
+        
+        rodadas++
+    }
+
+    exibirResultado(guerreiro, espadachim, rodadas - 1)
+
 }
 
-exibirResultado(guerreiro, espadachim, rodadas - 1)
+console.clear()
+main()
