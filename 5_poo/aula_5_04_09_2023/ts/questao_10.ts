@@ -140,11 +140,11 @@ function iniciarAtaques(jogadorA: Jogador, jogadorB: Jogador): void {
 
 function elevarNivel(jogadorA: Jogador, jogadorB: Jogador, valorRef: number) {
     // Quem subirá o nível
-    if (jogadorA.estaVivo() && valorRef == 2 || valorRef == 4 || valorRef == 6) {
+    if (valorRef == 2 || valorRef == 4 || valorRef == 6) {
         jogadorA.subirNivel()
         console.log(`\n-----> ${jogadorA.classe.toUpperCase()} alcançou o nível ${jogadorA.nivel}`)
     }
-    if (jogadorB.estaVivo() && valorRef == 1 || valorRef == 3 || valorRef == 5 || valorRef == 7) {
+    if (valorRef == 1 || valorRef == 3 || valorRef == 5 || valorRef == 7) {
         jogadorB.subirNivel()
         console.log(`\n-----> ${jogadorB.classe.toUpperCase()} alcançou o nível ${jogadorB.nivel}`)
     } 
