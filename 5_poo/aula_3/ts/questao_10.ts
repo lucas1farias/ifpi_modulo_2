@@ -1,6 +1,5 @@
 
 
-// Porque na impressão da estrutura com dados atualizados, está havendo retornos nas strings com "undefined" e "NaN"
 class Valor {
 
     indice(min: number, max: number): number {
@@ -214,7 +213,7 @@ function execInterval() {
         leituraId++
         dataMappingAndReducing()
         showUpdatedEstructure()
-        execInterval();
+        execInterval()
     }, intervalo)
 }
 

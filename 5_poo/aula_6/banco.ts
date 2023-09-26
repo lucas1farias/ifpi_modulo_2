@@ -31,29 +31,45 @@ export class Banco {
             conta.numero == cadaConta.numero ? repetido = true : null
         })
 
-        !repetido ? this.contas.push(conta) : console.log(`A conta ${conta.numero} já consta no banco!`)
+        if (!repetido) {
+            this.contas.push(conta)
+            console.log("Conta criada com sucesso!")
+        } else {
+            console.log(`A conta ${conta.numero} já consta no banco!`)
+        }
     }
 
     alterar(conta: Contav2): void {
 
     }
 
-    consultar(i: string): Contav2 | boolean {
+    consultar(i: string): Contav2 {
         
-        for (let j = 0; j <= this.quantidadeDeContas(); j++) {
+        for (let j = 0; j < this.quantidadeDeContas(); j++) {
             if (i == this.contas[j].numero) {
                 return this.contas[j]
             }
         }
-        return false
+        return new Contav2("0", 0)
     }
 
     excluir(i: string): void {
-
+        const contaExiste = this.consultar(i)
+        if (contaExiste.numero != "0") {
+            console.log("Conta removida com sucesso!")
+        } else {
+            console.log("Conta não cadastrada ao banco!")
+        }
     }
 
     depositar(i: string, valor: number): void {
-
+        const contaExiste = this.consultar(i)  
+        if (contaExiste.numero != "0") {
+            contaExiste.saldo += valor
+            console.log("\n===== AVISO =====\nDeposito efetuado com sucesso\n")
+        } else {
+            console.log("\n===== AVISO =====\nConta não cadastrada ao banco!\n")
+        }
     }
     
     /*  Questão 1 - letra B
@@ -63,20 +79,17 @@ export class Banco {
     sacar(i: string, valor: number): void {
         let contaExiste = this.consultar(i)
         
-        // if (contaExiste) não funciona, então foi perguntado a instancia
-        if (contaExiste instanceof Contav2) {
+        if (contaExiste.numero != "0") {
             if (valor <= contaExiste.saldo) {
                 contaExiste.saldo = contaExiste.saldo - valor
-                console.log(`Saque efetuado! você retirou R$ ${valor.toFixed(2)}`)
+                console.log(`\n===== AVISO =====\nSaque efetuado! você retirou R$ ${valor.toFixed(2)}\n`)
             } else {
-                console.log(`Valor de saque inválido! O saldo da conta ${contaExiste.numero} é insuficiente`)
+                console.log(`\n===== AVISO =====\nValor de saque inválido! O saldo da conta ${contaExiste.numero} é insuficiente\n`)
             }
+        } else {
+            console.log("\n===== AVISO =====\nConta não cadastrada ao banco!\n")
         }
     }
-
-    // consultarSaldo(i: string): number {
-
-    // }
     
     /* Questão 1 - letra C
         transferir(numeroCredito: string, numeroDebito: string, valor: number):
@@ -90,10 +103,11 @@ export class Banco {
         if (receptor instanceof Contav2 && provedor instanceof Contav2) {
             if (provedor.saldo >= valor) {
                 provedor.saldo -= valor
-                receptor.saldo = receptor.saldo + valor
+                receptor.saldo += valor
+                console.log("\n===== AVISO =====\nTransferência efetuada com sucesso!\n")
             }
             else {
-                console.log("Transferência não autorizada pela quantia ser maior que o saldo do provedor")
+                console.log("\n===== AVISO =====\nTransferência não autorizada. A quantia é maior que o saldo do provedor\n")
             }
         }
     }

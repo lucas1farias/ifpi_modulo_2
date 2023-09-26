@@ -26,13 +26,15 @@ const msgs = {
     txtOperacao: "\nDigite o número da operação acima >>> ",
     txtValorSaque: "Digite o valor do saque >>> ",
     txtValorDeposito: "Digite o valor a ser depositado >>> ",
-    txtValorTransferencia: "Digite o valor a ser transferido >>>",
+    txtValorTransferencia: "Digite o valor a ser transferido >>> ",
     // Encerramento
     txtApertarEnter: "aperte enter p/ continuar...\n".toUpperCase(),
     txtAppEncerrada: "\n========== Aplicação encerrada ==========",
     // Títulos de apresentação
     txtCadastrar: `\n========== ${"Cadastro de conta".toUpperCase()} ==========`,
     txtConsultar: `\n========== ${"Consulta de conta".toUpperCase()} ==========`,
+    txtSacar: `\n========== ${"Saque em conta".toUpperCase()} ==========`,
+    txtDepositar: `\n========== ${"Depósito em conta".toUpperCase()} ==========`,
     txtRemover: `\n========== ${"Remoção de conta".toUpperCase()} ==========`,
     txtTransferir: `\n========== ${"Transferência de valores entre contas".toUpperCase()} ==========`,
     // Positivas
@@ -79,6 +81,7 @@ do {
     
     console.log(msgs['txtAppEncerrada'])
 
+    // Auxiliares
     function requisitarIdConta() {
         return entrada("Digite o número da conta >>> ")
     }
@@ -87,57 +90,20 @@ do {
         return `RS ${valor.toFixed(2)}`
     }
 
-    function confirmarExistencia(conta: Contav2): void {
-        console.log(`\nVerificamos, sua conta ${conta.numero} existe`)
-        console.log(`Saldo atual: ${valorTipoMoeda(conta.saldo)}`)
-    }
-
-    function confirmarNovoSaldo(conta: Contav2): void {
-        console.log(`Saldo após o depósito: ${valorTipoMoeda(conta.saldo)}`) 
-    }
-
-    function ehConta(entrada: string): Contav2 | boolean {
-        for (let i = 0; i < banco.contas.length; i++) {
-            if (entrada == banco.contas[i].numero) {
-                return banco.contas[i]
-            }        
-        }
-        return false
-    }
-
-    function saqueValido(conta: Contav2, valor: number): boolean {
-        return conta.saldo >= valor
-    }
-    
     // Principais
     function inserir(): void {
         console.log(msgs['txtCadastrar'])
         let idConta: string = requisitarIdConta()
         const conta: Contav2 = new Contav2(idConta, 0)
-
-        if (banco.contas.length != 0) {
-            for (let i = 0; i < banco.contas.length; i++) {
-                if (idConta == banco.contas[i].numero) {
-                    console.log([1], msgs['txtContaRepetida'])
-                    break
-                } else {
-                    banco.contas.push(conta)
-                    console.log([2], msgs['txtContaCadastrada'])
-                    break
-                }
-            }
-        } else {
-            banco.contas.push(conta)
-            console.log(msgs['txtContaCadastrada'])
-        }
+        banco.inserir(conta)
     }
 
     function consultar(): void {
         console.log(msgs['txtConsultar']);
         let idConta: string = requisitarIdConta()
-        const contaExiste = ehConta(idConta)
+        const contaExiste = banco.consultar(idConta)
         
-        if (contaExiste instanceof Contav2) {
+        if (contaExiste.numero != "0") {
             console.log(`Conta encontrada:\n    status: ativa\n    id: ${contaExiste.numero}\n    saldo: ${valorTipoMoeda(contaExiste.saldo)}`)
         } else {
             console.log(msgs['txtContaInexistente'])
@@ -145,66 +111,37 @@ do {
     }
 
     function sacar(): void {
+        console.log(msgs['txtSacar'])
         let idConta: string = requisitarIdConta()
-        const contaExiste = ehConta(idConta)
-        if (contaExiste instanceof Contav2) {
-            let valorSaque: number = Number(entrada(msgs['txtValorSaque']))
-            
-            if (saqueValido(contaExiste, valorSaque)) {
-                contaExiste.saldo -= valorSaque
-                console.log(msgs['txtSaldoEfetivado'])
-            } else {
-                console.log(msgs['txtSaldoInvalido'])
-            }
-        }
+        // Allow second input in order to avoid code repetition
+        let valorSaque: number = Number(entrada(msgs['txtValorSaque']))
+        // In here, it is known if account exists and withdraw is possible
+        banco.sacar(idConta, valorSaque) 
     }
 
     function depositar(): void {
+        console.log(msgs['txtDepositar'])
         let idConta: string = requisitarIdConta()
-        const contaExiste = ehConta(idConta)
-            
-        if (contaExiste instanceof Contav2) {
-            confirmarExistencia(contaExiste)
-            let valorDepositado: number = Number(entrada(msgs['txtValorDeposito']))
-            contaExiste.saldo = valorDepositado
-            confirmarNovoSaldo(contaExiste)
-        } else {
-            console.log(msgs['txtContaInexistente'])
-        } 
+        // Allow second input in order to avoid code repetition
+        let valorDepositado: number = Number(entrada(msgs['txtValorDeposito']))
+        // In here, it is known if account exists and storage is possible
+        banco.depositar(idConta, valorDepositado)
     }
     
     function excluir(): void {
         console.log(msgs['txtRemover'])
-        let idConta = requisitarIdConta()
-        
-        for (let i = 0; i < banco.contas.length; i++) {
-            if (idConta == banco.contas[i].numero) {
-                banco.contas.splice(i, 1)
-                console.log(msgs['txtContaRemovida'])
-            }
-            else {
-                console.log(msgs['txtContaInexistente'])
-            }
-        }
+        const idConta = requisitarIdConta()
+        banco.excluir(idConta)
     }
 
     function transferir(): void {
         console.log(msgs['txtTransferir'])
         
+        // Allow all inputs to be filled in order to avoid code repetition
         let idContaReceptora = entrada(msgs['txtContaReceptora'])
-        const contaReceptoraExiste = ehConta(idContaReceptora)
         let idContaProvedora = entrada(msgs['txtContaProvedora'])
-        const contaProvedoraExiste = ehConta(idContaProvedora)
+        let valor = Number(entrada(msgs['txtValorTransferencia']))
         
-        if (contaReceptoraExiste instanceof Contav2 && contaProvedoraExiste instanceof Contav2) {
-            let valorTransferencia = Number(entrada(msgs['txtValorTransferencia']))
-            
-            if (contaProvedoraExiste.saldo >= valorTransferencia) {
-                console.log(msgs['txtTransferenciaValida'])
-                contaProvedoraExiste.saldo -= valorTransferencia
-                contaReceptoraExiste.saldo += valorTransferencia
-            } else {
-                console.log(msgs['txtSaldoInvalido'])
-            }
-        }
+        // This function will tell if transfering is possible
+        banco.transferir(idContaReceptora, idContaProvedora, valor)
     }
