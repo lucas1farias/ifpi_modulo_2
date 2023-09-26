@@ -1,189 +1,245 @@
 
 
-export class Contav2 {
-    numero: string
-    saldo: number
+export class Messages {
+    labels
 
-    constructor(numero: string, saldo: number) {
-        this.numero = numero
-        this.saldo = saldo
+    constructor() {
+        this.labels = {
+            infos: {
+                warning: "\n===== AVISO =====\n",
+                register: `\n========== ${"Cadastro de conta".toUpperCase()} ==========`,
+                query: `\n========== ${"Consulta de conta".toUpperCase()} ==========`,
+                withdraw: `\n========== ${"Saque em conta".toUpperCase()} ==========`,
+                storage: `\n========== ${"Depósito em conta".toUpperCase()} ==========`,
+                removal: `\n========== ${"Remoção de conta".toUpperCase()} ==========`,
+                transfer: `\n========== ${"Transferência de valores entre contas".toUpperCase()} ==========`,
+            },
+            
+            success: {
+                creation: "Conta criada com sucesso!\n",
+                storage: "Deposito efetuado com sucesso!\n",
+                removal: "Conta removida com sucesso!\n",
+                transfering: "Transferência efetuada com sucesso!\n",
+            },
+
+            fail: {
+                find: "Conta não cadastrada ao banco!\n",
+                transferNotEnoughFunds: "Transferência não autorizada! A quantia é maior que o saldo do provedor\n",
+                twinAccounts: "Transferência cancelada! Impossível transferir de uma conta para a mesma conta!\n"
+            },
+
+            inputs: {
+                operation: "Digite o valor de uma das operações acima >> ",
+                withdraw: "Digite o valor do saque >>> ",
+                store: "Digite o valor a ser depositado >>> ",
+                idReceiverAccount:"Digite o número da conta a receber >>> ",
+                idProviderAccount: "Digite o número da conta a fornecer >>> ",
+                transferedValue: "Digite o valor a ser transferido >>> ",
+            }
+        }
     }
 }
 
-export class Banco {
-    contas: Contav2[]
+export class Account {
+    number: string
+    balance: number
 
-    constructor(contas: Contav2[]) {
-        this.contas = contas
+    constructor(number: string, balance: number) {
+        this.number = number
+        this.balance = balance
+    }
+}
+
+export class Bank {
+    accounts: Account[]
+    
+    constructor(accounts: Account[]) {
+        this.accounts = accounts
     }
     
     /*  Questão 1 - letra A
         -> Altere o método inserir para que não seja possível contas com mesmo número;
     */
-    inserir(conta: Contav2): void {
-        let repetido: boolean = false
+    insert(account: Account): void {
+        let repeated: boolean = false
 
-        // for (let j = 0; j <= this.contas.length; j++) {
-            // conta.numero == this.contas[j].numero ? repetido = true : null
-        // }
-
-        this.contas.forEach(cadaConta => {
-            conta.numero == cadaConta.numero ? repetido = true : null
+        this.accounts.forEach(cadaConta => {
+            account.number == cadaConta.number ? repeated = true : null
         })
 
-        if (!repetido) {
-            this.contas.push(conta)
-            console.log("Conta criada com sucesso!")
+        if (!repeated) {
+            this.accounts.push(account)
+            console.log(new Messages().labels.infos.warning, new Messages().labels.success.creation)
         } else {
-            console.log(`A conta ${conta.numero} já consta no banco!`)
+            console.log(new Messages().labels.infos.warning, `A conta ${account.number} já consta no banco!\n`)
         }
     }
 
-    alterar(conta: Contav2): void {
+    alter(account: Account): void {
 
     }
 
-    consultar(i: string): Contav2 {
+    query(i: string): Account {
         
-        for (let j = 0; j < this.quantidadeDeContas(); j++) {
-            if (i == this.contas[j].numero) {
-                return this.contas[j]
+        for (let j = 0; j < this.accountsAmount(); j++) {
+            if (i == this.accounts[j].number) {
+                return this.accounts[j]
             }
         }
-        return new Contav2("0", 0)
+        return new Account("0", 0)
     }
 
-    excluir(i: string): void {
-        const contaExiste = this.consultar(i)
-        if (contaExiste.numero != "0") {
-            console.log("Conta removida com sucesso!")
+    remove(i: string): void {
+        const accountExists = this.query(i)
+        if (accountExists.number != "0") {
+            // Tracking account by its id, and deleting it in case it is found
+            this.accounts.forEach((eachAccount, accountIndex) => {
+                if (eachAccount.number == i) {
+                    this.accounts.splice(accountIndex, 1)
+                }
+            })
+            console.log(new Messages().labels.infos.warning, new Messages().labels.success.removal)
         } else {
-            console.log("Conta não cadastrada ao banco!")
+            console.log(new Messages().labels.infos.warning, new Messages().labels.fail.find)
         }
     }
 
-    depositar(i: string, valor: number): void {
-        const contaExiste = this.consultar(i)  
-        if (contaExiste.numero != "0") {
-            contaExiste.saldo += valor
-            console.log("\n===== AVISO =====\nDeposito efetuado com sucesso\n")
+    store(i: string, value: number): void {
+        const accountExists = this.query(i)  
+        if (accountExists.number != "0") {
+            accountExists.balance += value
+            console.log(new Messages().labels.infos.warning, new Messages().labels.success.storage)
         } else {
-            console.log("\n===== AVISO =====\nConta não cadastrada ao banco!\n")
+            console.log(new Messages().labels.infos.warning, new Messages().labels.fail.find)
         }
     }
     
     /*  Questão 1 - letra B
-        sacar(numero: string, valor: number): pesquisa uma conta e realiza uma
+        sacar(number: string, valor: number): pesquisa uma conta e realiza uma
         operação de crédito com o valor passado;
     */
-    sacar(i: string, valor: number): void {
-        let contaExiste = this.consultar(i)
+    withdraw(i: string, value: number): void {
+        const accountExists = this.query(i)
         
-        if (contaExiste.numero != "0") {
-            if (valor <= contaExiste.saldo) {
-                contaExiste.saldo = contaExiste.saldo - valor
-                console.log(`\n===== AVISO =====\nSaque efetuado! você retirou R$ ${valor.toFixed(2)}\n`)
-            } else {
-                console.log(`\n===== AVISO =====\nValor de saque inválido! O saldo da conta ${contaExiste.numero} é insuficiente\n`)
+        if (accountExists.number != "0") {
+            if (value <= accountExists.balance) {
+                accountExists.balance = accountExists.balance - value
+                console.log(new Messages().labels.infos.warning, `Valor retirado: R$ ${value.toFixed(2)}\n`)
+            } 
+            else {
+                console.log(new Messages().labels.infos.warning, `Valor de saque inválido! O saldo da conta ${accountExists.number} é insuficiente\n`)
             }
-        } else {
-            console.log("\n===== AVISO =====\nConta não cadastrada ao banco!\n")
+        } 
+        else {
+            console.log(new Messages().labels.infos.warning, new Messages().labels.fail.find)
         }
     }
     
     /* Questão 1 - letra C
-        transferir(numeroCredito: string, numeroDebito: string, valor: number):
+        transferir(numberCredito: string, numberDebito: string, valor: number):
         realiza uma procura por ambas as contas e chama o método transferir de
         uma delas passando a conta de débito e o valor como parâmetros;
     */
-    transferir(idCreditado: string, idDebitado: string, valor: number): void {
-        let receptor = this.consultar(idCreditado)
-        let provedor = this.consultar(idDebitado)
+    transfer(idFromBenefited: string, idFromDebited: string, value: number): void {
+        let receiver = this.query(idFromBenefited)
+        let provider = this.query(idFromDebited)
         
-        if (receptor instanceof Contav2 && provedor instanceof Contav2) {
-            if (provedor.saldo >= valor) {
-                provedor.saldo -= valor
-                receptor.saldo += valor
-                console.log("\n===== AVISO =====\nTransferência efetuada com sucesso!\n")
+        if (receiver.number != "0" && provider.number != "0") {
+            if (receiver.number != provider.number) {
+                if (provider.balance >= value) {
+                    provider.balance -= value
+                    receiver.balance += value
+                    console.log(new Messages().labels.infos.warning, new Messages().labels.success.transfering)
+                }
+                else {
+                    console.log(new Messages().labels.infos.warning, new Messages().labels.fail.transferNotEnoughFunds)
+                }
+            } else {
+                console.log(new Messages().labels.infos.warning, new Messages().labels.fail.twinAccounts)
             }
-            else {
-                console.log("\n===== AVISO =====\nTransferência não autorizada. A quantia é maior que o saldo do provedor\n")
-            }
+        } else {
+            console.log(new Messages().labels.infos.warning, new Messages().labels.fail.find)
         }
     }
 
-    quantidadeDeContas(): number {
-        return this.contas.length
+    accountsAmount(): number {
+        return this.accounts.length
     }
 
-    exibirSaldoGlobal(): number {
-        let saldoGlobal = 0
-        this.contas.forEach(conta => {
-            saldoGlobal += conta.saldo
+    displayGlobalBalance(): Account {
+        /*
+            let saldoGlobal = 0
+            this.contas.forEach(conta => {
+                saldoGlobal += conta.saldo
+            })
+            return saldoGlobal
+        */
+        
+        return this.accounts.reduce((current: Account, next: Account) => {
+            return new Account("0", current.balance + next.balance)
         })
-        return saldoGlobal
     }
 
-    exibirMediaSaldos(): number {
-        return this.exibirSaldoGlobal() / this.quantidadeDeContas()
+    displayGlobalBalanceMean(): number {
+        return this.displayGlobalBalance().balance / this.accountsAmount()
     }
 }
 
-function addContas() {
+function appendAccounts() {
     // Inserção das contas
-    banco.inserir(joana)
-    banco.inserir(joena)
+    bank.insert(joana)
+    bank.insert(joena)
 }
 
-function simularSaque() {
+function simulateWithdraw() {
     console.log(`===== ${"simulação de saque".toUpperCase()} =====`)
-    console.log(joanaExiste instanceof Contav2 ? `Saldo da Joana: R$ ${joanaExiste.saldo}` : null)
-    banco.sacar("1", 251)
-    console.log(joanaExiste instanceof Contav2 ? `Saldo da Joana: R$ ${joanaExiste.saldo}` : null)
-    banco.sacar("1", 225)
-    console.log(joanaExiste instanceof Contav2 ? `Saldo da Joana: R$ ${joanaExiste.saldo}` : null)
+    console.log(joanaExiste.number != "0" ? `Saldo da Joana: R$ ${joanaExiste.balance}` : null)
+    bank.withdraw("1", 251)
+    console.log(joanaExiste.number != "0" ? `Saldo da Joana: R$ ${joanaExiste.balance}` : null)
+    bank.withdraw("1", 225)
+    console.log(joanaExiste.number != "0" ? `Saldo da Joana: R$ ${joanaExiste.balance}` : null)
     // Até este momento, Joana só possui 25 de saldo
 }
 
-function simularTransferencia() {
+function simulateTransfer() {
     console.log(`\n===== ${"simulação de transferência".toUpperCase()} =====`)
-    console.log(banco.contas)
+    console.log(bank.accounts)
     console.log(joanaExiste)
     console.log(joenaExiste)
-    banco.transferir("2", "1", 20)
-    console.log(joanaExiste instanceof Contav2 ? `Saldo da Joana: R$ ${joanaExiste.saldo}` : null)
-    console.log(joenaExiste instanceof Contav2 ? `Saldo da Joena: R$ ${joenaExiste.saldo}` : null)
+    bank.transfer("2", "1", 20)
+    console.log(joanaExiste.number != "0" ? `Saldo da Joana: R$ ${joanaExiste.balance}` : null)
+    console.log(joenaExiste.number != "0" ? `Saldo da Joena: R$ ${joenaExiste.balance}` : null)
 }
 
-function qtdContas() {
+function exhibitAccountsAmount() {
     console.log(`\n===== ${"Número de contas registradas".toUpperCase()} =====`)
-    console.log(banco.quantidadeDeContas())
+    console.log(bank.accountsAmount())
 }
 
-function saldoGlobal() {
+function exhibitGlobalBalance() {
     console.log(`\n===== ${"Saldo global das contas cadastradas"} =====`)
-    console.log(`R$ ${banco.exibirSaldoGlobal().toFixed(2)}`)
+    console.log(`R$ ${bank.displayGlobalBalance().balance.toFixed(2)}`)
 }
 
-function mediaSaldoGlobal() {
+function exhibitGlobalBalanceMean() {
     console.log(`\n===== ${"Média dos saldos das contas cadastradas"} =====`)
-    console.log(`R$ ${banco.exibirMediaSaldos()}`)
+    console.log(`R$ ${bank.displayGlobalBalanceMean()}`)
 }
 
-let contas: Contav2[] = []
-let banco: Banco = new Banco(contas)
+let accounts: Account[] = []
+let bank: Bank = new Bank(accounts)
     
 // Contas
-const joana: Contav2 = new Contav2("1", 250)
-const joena: Contav2 = new Contav2("2", 300)
+const joana: Account = new Account("1", 250)
+const joena: Account = new Account("2", 300)
 
-addContas()
+appendAccounts()
 
-let joanaExiste = banco.consultar("1")
-let joenaExiste = banco.consultar("2")
+let joanaExiste = bank.query("1")
+let joenaExiste = bank.query("2")
 
-simularSaque()
-simularTransferencia()
-qtdContas()
-saldoGlobal()
-mediaSaldoGlobal()
+simulateWithdraw()
+simulateTransfer()
+exhibitAccountsAmount()
+exhibitGlobalBalance()
+exhibitGlobalBalanceMean()

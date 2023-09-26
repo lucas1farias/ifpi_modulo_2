@@ -1,11 +1,11 @@
 
 
 import prompt from "prompt-sync"
-import { Contav2, Banco } from "./banco"
+import { Account, Bank, Messages } from "./banco"
 
 function menu(): void {
-    const saudacao: string = '\n========== Banco Fantástico =========='
-    const opcoes: string = `\n${"operações disponíveis".toUpperCase()}:
+    const greetings: string = '\n========== Banco Fantástico =========='
+    const operations: string = `\n${"operações disponíveis".toUpperCase()}:
     1. Cadastrar conta
     2. Consultar
     3. Sacar
@@ -13,135 +13,106 @@ function menu(): void {
     5. Exluir
     6. Transferir
     0. Sair`
-    console.log(saudacao + opcoes)
+    console.log(greetings + operations)
 }
 
-let entrada = prompt()
-let contas: Contav2[] = []
-let banco: Banco = new Banco(contas)
-let opcao: string = ""
-
-const msgs = {
-    // Conteúdos das entradas
-    txtOperacao: "\nDigite o número da operação acima >>> ",
-    txtValorSaque: "Digite o valor do saque >>> ",
-    txtValorDeposito: "Digite o valor a ser depositado >>> ",
-    txtValorTransferencia: "Digite o valor a ser transferido >>> ",
-    // Encerramento
-    txtApertarEnter: "aperte enter p/ continuar...\n".toUpperCase(),
-    txtAppEncerrada: "\n========== Aplicação encerrada ==========",
-    // Títulos de apresentação
-    txtCadastrar: `\n========== ${"Cadastro de conta".toUpperCase()} ==========`,
-    txtConsultar: `\n========== ${"Consulta de conta".toUpperCase()} ==========`,
-    txtSacar: `\n========== ${"Saque em conta".toUpperCase()} ==========`,
-    txtDepositar: `\n========== ${"Depósito em conta".toUpperCase()} ==========`,
-    txtRemover: `\n========== ${"Remoção de conta".toUpperCase()} ==========`,
-    txtTransferir: `\n========== ${"Transferência de valores entre contas".toUpperCase()} ==========`,
-    // Positivas
-    txtContaCadastrada: "O cadastro da sua conta foi efetuada!",
-    txtContaReceptora: "Digite o número da conta a receber >>> ",
-    txtContaProvedora: "Digite o número da conta a fornecer >>> ",
-    txtSaldoEfetivado: "Saldo efetuado com sucesso!",
-    // Negativas
-    txtContaRepetida: "O id da conta fornecido já existe no banco!",
-    txtContaInexistente: "Conta não registrada ao banco!",
-    txtTransferenciaValida: "Sua transferência foi aceita!",
-    txtSaldoInvalido: "Saldo insuficiente!",
-    txtContaRemovida: "A conta escolhida foi removido do banco!"
-}
+let input = prompt()
+let accounts: Account[] = []
+let bank: Bank = new Bank(accounts)
+let instruction: string = ""
 
 do {
     console.clear()
     menu()
-    opcao = entrada(msgs['txtOperacao']);
+    instruction = input(new Messages().labels.inputs.operation)
     
-    switch (opcao) {
+    switch (instruction) {
         case "1":
-            inserir()
+            insert()
             break
         case "2":
-            consultar()
+            query()
             break
         case "3":
-            sacar()
+            withdraw()
             break
         case "4":
-            depositar()
+            store()
             break
         case "5":
-            excluir()
+            remove()
             break
         case "6":
-            transferir()
+            transfer()
             break
     }
     
-    entrada(msgs['txtApertarEnter']);
-    } while (opcao != "0")
+    input("\nPressione a tecla ENTER\n")
+    } while (instruction != "0")
     
-    console.log(msgs['txtAppEncerrada'])
+    console.log(new Messages().labels.infos.warning, "Aplicação encerrada!")
 
     // Auxiliares
-    function requisitarIdConta() {
-        return entrada("Digite o número da conta >>> ")
+    function requestAccountId() {
+        return input("Digite o número da conta >>> ")
     }
 
-    function valorTipoMoeda(valor: number): string {
+    function convertValueAsCoinType(valor: number): string {
         return `RS ${valor.toFixed(2)}`
     }
 
     // Principais
-    function inserir(): void {
-        console.log(msgs['txtCadastrar'])
-        let idConta: string = requisitarIdConta()
-        const conta: Contav2 = new Contav2(idConta, 0)
-        banco.inserir(conta)
+    function insert(): void {
+        console.log(new Messages().labels.infos.register)
+        let accountId: string = requestAccountId()
+        const account: Account = new Account(accountId, 0)
+        bank.insert(account)
     }
 
-    function consultar(): void {
-        console.log(msgs['txtConsultar']);
-        let idConta: string = requisitarIdConta()
-        const contaExiste = banco.consultar(idConta)
+    function query(): void {
+        console.log(new Messages().labels.infos.query)
+        const accountId: string = requestAccountId()
+        const accountExists = bank.query(accountId)
         
-        if (contaExiste.numero != "0") {
-            console.log(`Conta encontrada:\n    status: ativa\n    id: ${contaExiste.numero}\n    saldo: ${valorTipoMoeda(contaExiste.saldo)}`)
+        if (accountExists.number != "0") {
+            console.log(new Messages().labels.infos.warning, `Conta encontrada:\n    status: ativa\n    id: ${accountExists.number}\n    saldo: ${convertValueAsCoinType(accountExists.balance)}`)
         } else {
-            console.log(msgs['txtContaInexistente'])
+            console.log(new Messages().labels.infos.warning, new Messages().labels.fail.find)
         }
     }
 
-    function sacar(): void {
-        console.log(msgs['txtSacar'])
-        let idConta: string = requisitarIdConta()
+    function withdraw(): void {
+        console.log(new Messages().labels.infos.withdraw)
+        let accountId: string = requestAccountId()
         // Allow second input in order to avoid code repetition
-        let valorSaque: number = Number(entrada(msgs['txtValorSaque']))
+        let withdrawValue: number = Number(input(new Messages().labels.inputs.withdraw))
         // In here, it is known if account exists and withdraw is possible
-        banco.sacar(idConta, valorSaque) 
+        bank.withdraw(accountId, withdrawValue) 
     }
 
-    function depositar(): void {
-        console.log(msgs['txtDepositar'])
-        let idConta: string = requisitarIdConta()
+    function store(): void {
+        console.log(new Messages().labels.infos.storage)
+        let accountId: string = requestAccountId()
         // Allow second input in order to avoid code repetition
-        let valorDepositado: number = Number(entrada(msgs['txtValorDeposito']))
+        let storedValue: number = Number(input(new Messages().labels.inputs.store))
         // In here, it is known if account exists and storage is possible
-        banco.depositar(idConta, valorDepositado)
+        bank.store(accountId, storedValue)
     }
     
-    function excluir(): void {
-        console.log(msgs['txtRemover'])
-        const idConta = requisitarIdConta()
-        banco.excluir(idConta)
+    function remove(): void {
+        console.log(new Messages().labels.infos.removal)
+        const idConta = requestAccountId()
+        bank.remove(idConta)
     }
 
-    function transferir(): void {
-        console.log(msgs['txtTransferir'])
+    function transfer(): void {
+        console.log(new Messages().labels.infos.transfer)
         
         // Allow all inputs to be filled in order to avoid code repetition
-        let idContaReceptora = entrada(msgs['txtContaReceptora'])
-        let idContaProvedora = entrada(msgs['txtContaProvedora'])
-        let valor = Number(entrada(msgs['txtValorTransferencia']))
+        let idFromReceiver = input(new Messages().labels.inputs.idReceiverAccount)
+        let idFromProvider = input(new Messages().labels.inputs.idProviderAccount)
+        let value = Number(input(new Messages().labels.inputs.transferedValue))
         
         // This function will tell if transfering is possible
-        banco.transferir(idContaReceptora, idContaProvedora, valor)
+        bank.transfer(idFromReceiver, idFromProvider, value)
     }
