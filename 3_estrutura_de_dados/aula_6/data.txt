@@ -1,0 +1,21 @@
+
+
+21/09/2023
+
+
+
+9.8) Crie a função recursiva "enesimo(n, L)", que devolve o enésimo item da lista L. Por exemplo, para L
+apontando a lista [a, b, c, d], a chamada "enesimo(3, L)" deve devovler o item "c". Para "n" inválido, a função
+deve parar com erro fatal.
+
+9.9) Na implementação dinâmica encadeada de pilha, os itens são mantidos numa lista (com um ponteiro P para seu
+início) e as inserções e remoções são feitas no início dessa lista. Crie as funções "empilha(x, &P)" e 
+"desempilha(&P)", para pilhas dinâmicas encadeadas, e faça um programa para testá-las.
+
+p 3700 ---> | C / 1900 | ---> | B / 2500 | ---> | A / NULL |
+              3700              1900              2500
+
+9.10) Na implementação dinâmica encadeada de fila, os itens são mantidos numa lista circular (com um ponteiro F
+para o último nó inserido na lista, que aponta o primeiro), as inserções são feitas no final na lista e as 
+remoções são feitas no início da lista. Crie funções "enfileira(x, &F)" e "desenfileira(&F)", para filas 
+dinâmicas encadeadas e faça um programa para testá-las.
