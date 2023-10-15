@@ -1,6 +1,6 @@
 
 
-class Veiculo {
+class VeiculoV2 {
     placa: string
     ano: number
 
@@ -10,7 +10,7 @@ class Veiculo {
     }
 }
 
-class Carro extends Veiculo {
+class CarroV2 extends Veiculo {
     modelo: string
 
     constructor(placa: string, ano: number, modelo: string) {
@@ -20,7 +20,7 @@ class Carro extends Veiculo {
 }
 
 // Carro extends 2 attribs. from "Veiculo" and 1 from "Carro"
-class CarroEletrico extends Carro {
+class CarroEletricoV2 extends Carro {
     autonomiaBateria: number
 
     constructor(placa: string, ano: number, modelo: string, autonomiaBateria: number) {
