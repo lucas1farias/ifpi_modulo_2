@@ -1,6 +1,7 @@
 
 
-import * as manager from 'fs-extra'; /* npm install fs-extra    npm install --save-dev @types/fs-extra */
+/* npm install fs-extra    npm install --save-dev @types/fs-extra */
+import * as manager from 'fs-extra'; 
 
 export class File {
     osPath: string
@@ -505,5 +506,160 @@ export class PerishableProduct extends Product {
         
         // Expire day did not reach today
         return today <= expireDate;
+    }
+}
+
+/* 16 de outubro de 2023 (questão 1) */
+export class Employee {
+    salary: number = 500
+
+    /* (questão 1, letra A)
+    Implemente os métodos calcularSalario() de cada classe da seguinte forma:
+    Empregado: apenas retorna o valor do atributo salário;
+    */
+    calculateSalary(): number {
+        return this.salary
+    }
+}
+
+/* 16 de outubro de 2023 (questão 1) */
+export class Diarist extends Employee {
+    /* (questão 1, letra B)
+    Diarista: sobrescreve calcularSalario, chamando o método homônimo de Empregado e dividindo o resultado por 30;
+    */
+    calculateSalary(): number {
+        return (<Employee> new Employee).calculateSalary() / 30
+    }
+}
+
+/* 16 de outubro de 2023 (questão 1) */
+export class HourlyDiarist extends Diarist {
+    /* (questão 1, letra C)
+    Horista: sobrescreve calcularSalario, chamando o método homônimo de Diarista e dividindo o resultado por 24.
+    */
+    calculateSalary(): number {
+        return (<Diarist> new Diarist).calculateSalary() / 24
+    }
+}
+
+/* 16 de outubro de 2023 (questão 2) */
+export class Person {
+    /* (letra A) 
+    Crie uma classe Pessoa com:
+    Atributos privados _nome (tipo string) e _sobrenome (tipo string). 
+    */
+   _name: string
+   _lastName: string
+
+    constructor(name: string, lastName: string, fullName: string) {
+        this._name = name
+        this._lastName = lastName
+        /* (letra C)
+        Um construtor que recebe como parâmetros o nome e o sobrenome da pessoa e inicializa 
+        respectivamente os atributos nome e sobrenome. 
+        */
+        fullName = name + lastName
+    }
+    
+    /* (letra A) Cada um desses atributos deve ter métodos para lê-los (getters). */
+    get name(): string {
+        return this._name
+    }
+    
+    /* (letra A) Cada um desses atributos deve ter métodos para lê-los (getters). */
+    get lastName(): string {
+        return this._lastName
+    }
+    
+    /* (letra B)
+    Um método get chamado nomeCompleto que não possui parâmetros de entrada e que retorna a 
+    concatenação do atributo nome com o atributo sobrenome. 
+    */
+    get fullName(): string {
+        return this.name + this.lastName
+    }
+}
+
+/* 16 de outubro de 2023 (questão 3) 
+3. Crie uma subclasse de Pessoa, chamada Funcionario que deve possuir: 
+*/
+export class EmployeeV2 extends Person {
+    _identifier: string
+    _salary: number
+
+    constructor(name: string, lastName: string, fullName: string, identifier: string, salary: number) {
+        super(name, lastName, fullName)
+        this._identifier = identifier
+        
+        /* (letra B) O salário de um funcionário jamais poderá ser negativo. */
+        if (salary >= 0) {
+            this._salary = salary
+        } else {
+            this._salary = 0
+        }
+    }
+    
+    get identifier(): string {
+        return this._identifier
+    }
+
+    get salary(): number {
+        return this._salary
+    }
+    
+    calculateFirstSalaryMontant(): number {
+        return this.salary * (60/100)
+    }
+
+    calculateSecondtSalaryMontant(): number {
+        return this.salary * (40/100)
+    }
+}
+
+/* 16 de outubro de 2023 (questão 4) */
+export class Professor extends EmployeeV2 {
+    title: string
+
+    constructor(name: string, lastName: string, fullName: string, identifier: string, salary: number, title: string) {
+        super(name, lastName, fullName, identifier, salary)
+        this.title = title
+    }
+
+    calculateFirstSalaryMontant(): number {
+        return this.salary
+    }
+
+    calculateSecondtSalaryMontant(): number {
+        return 0
+    }
+}
+
+/* 16 de outubro de 2023 (questão 5) */
+// (parte 1) Crie uma classe chamada Folha de pagamento
+export class PaymentSheet {
+    // (parte 2) que no construtor receba um array de Pessoa
+    employees: Person[]
+    
+    // (parte 3) e inicialize um atributo do mesmo tipo.
+    constructor(employees: Person[]) {
+        this.employees = employees
+    }
+    
+    /* (parte 4)
+    Crie um método chamado calcularPagamentos() que retorna um valor que represente o total de 
+    salários dos elementos do array.
+    */ 
+    calculatePayments(): Person {
+        /*
+        let paymentAmount: number = 0
+        for (let i = 0; i < this.employees.length; i++) {
+            paymentAmount += (<EmployeeV2>this.employees[i]).salary
+        }
+        return paymentAmount
+        */
+        
+        return this.employees.reduce((current: Person, next: Person) => {
+            return new EmployeeV2("", "", "", "", ((<EmployeeV2>current).salary) + (<EmployeeV2>next).salary)
+        })
     }
 }
